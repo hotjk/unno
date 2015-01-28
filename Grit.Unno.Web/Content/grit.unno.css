@@ -1,0 +1,33 @@
+﻿.js-unno-template
+{
+    display:none;
+}
+
+.js-unno .tab-content
+{
+    padding-top: 20px;
+}
+.js-unno-add-tab
+{
+    margin-left: 6px;
+}
+
+.validation-summary-valid
+{
+    display:none;
+}
+
+.input-validation-error
+{
+    border-color: #a94442;
+}
+
+.field-validation-error
+{
+    color: #a94442;
+}
+
+.datepicker 
+{
+    z-index: 1151 !important;
+}

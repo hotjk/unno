@@ -1,0 +1,71 @@
+﻿@model UIControlParams
+@using Grit.Unno;
+@{
+    Unit rootUnit = ViewBag.Unit as Unit;
+    Node rootNode = ViewBag.Node as Node;
+
+    object value = null;
+    string displayValue = string.Empty;
+    if (Model.Model == UIControlMode.Standard)
+    {
+        Node node = rootNode.Find(Model.Key);
+        if (node != null)
+        {
+            value = node.Value;
+            switch (Model.Format)
+            {
+                case UIControlFormat.Date:
+                    displayValue = ((DateTime)node.Value).ToString("yyyy-MM-dd");
+                    break;
+                case UIControlFormat.DateTime:
+                    displayValue = ((DateTime)node.Value).ToString("yyyy-MM-dd hh-mm-dd");
+                    break;
+                default:
+                    displayValue = node.Value.ToString();
+                    break;
+            }
+        }
+    }
+
+    string name = string.Empty;
+    Unit unit = rootUnit.Find(string.IsNullOrEmpty(Model.Unit) ? Model.Key : Model.Unit, ref name);
+    var properties = unit.UIValidateProperties(name);
+    if (Model.Model == UIControlMode.Template || Model.Model == UIControlMode.Modal)
+    {
+        Model.AddClass("js-unno-ignore-validate");
+    }
+    if (Model.Type == UIControlType.DatePicker)
+    {
+        Model.AddClass("js-unno-datepicker");
+    }
+    properties.Add("class", Model.CssClass);
+    if (!string.IsNullOrEmpty(Model.Style))
+    {
+        properties.Add("style", Model.Style);
+    }
+}
+@switch (Model.Type)
+{
+    case UIControlType.TextBox:
+    case UIControlType.DatePicker:
+        @Html.TextBox(Model.Key, displayValue, properties)
+        <span class="field-validation-valid" data-valmsg-for="@Model.Key" data-valmsg-replace="true"></span>
+        break;
+    case UIControlType.Hidden:
+    @Html.Hidden(Model.Key, displayValue, properties)
+        break;
+    case UIControlType.TextArea:
+    @Html.TextArea(Model.Key, displayValue, properties)
+    <span class="field-validation-valid" data-valmsg-for="@Model.Key" data-valmsg-replace="true"></span>
+        break;
+    case UIControlType.Checkbox:
+    @Html.CheckBox(Model.Key, value == null ? false : (bool)value, properties)
+    <span class="field-validation-valid" data-valmsg-for="@Model.Key" data-valmsg-replace="true"></span>
+        break;
+    case UIControlType.DropDownList:
+        var spec = unit.Specifications.Single(n => n.Type == Grit.Unno.Specs.SpecificationType.Lookup) as Grit.Unno.Specs.LookupSpecification;
+        var items = spec.Options.Select(n => new SelectListItem { Text = n, Value = n, Selected = (n == displayValue) });
+        @Html.DropDownList(Model.Key, items, string.Empty, properties)
+        <span class="field-validation-valid" data-valmsg-for="@Model.Key" data-valmsg-replace="true"></span>
+        break;
+}

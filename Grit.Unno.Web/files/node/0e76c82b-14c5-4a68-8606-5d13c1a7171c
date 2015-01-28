@@ -1,0 +1,13 @@
+﻿{
+  "Data": {
+    "CompanyName": "a",
+    "RegOfYear": 1,
+    "FinancialReport": null,
+    "House": null,
+    "Car": null
+  },
+  "NodeId": "0e76c82b-14c5-4a68-8606-5d13c1a7171c",
+  "UnitId": "47d687dd-c642-4e21-ac52-1d7afbec23b8",
+  "UpdateAt": "2015-01-28T15:34:32.1581573+08:00",
+  "Version": 0
+}

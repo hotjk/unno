@@ -1,0 +1,72 @@
+﻿{
+  "Data": {
+    "CompanyName": "某企业",
+    "RegOfYear": 12,
+    "FinancialReport": [
+      {
+        "Year": 2014,
+        "GrossProfit": 100.0,
+        "NetProfit": 80.0,
+        "Full": true,
+        "UpdateAt": "2014-01-01T00:00:00",
+        "Category": "分类2",
+        "Remark": "备注1"
+      },
+      {
+        "Year": 2013,
+        "GrossProfit": 100.0,
+        "NetProfit": 80.0,
+        "Full": false,
+        "UpdateAt": "2014-01-02T00:00:00",
+        "Category": "分类4",
+        "Remark": "备注2"
+      }
+    ],
+    "House": [
+      {
+        "Size": 100.0,
+        "Address": "某城市某街道某小区101",
+        "Reference": [
+          {
+            "Site": "我爱我家",
+            "Price": 1000000.0
+          },
+          {
+            "Site": "链家",
+            "Price": 1100000.0
+          }
+        ]
+      },
+      {
+        "Size": 200.0,
+        "Address": "某城市某街道某小区102",
+        "Reference": [
+          {
+            "Site": "我爱我家",
+            "Price": 2000000.0
+          },
+          {
+            "Site": "链家",
+            "Price": 2100000.0
+          }
+        ]
+      }
+    ],
+    "Car": [
+      {
+        "BuyDate": "2014-01-01T00:00:00",
+        "Model": "Audi",
+        "Price": 1000000.0
+      },
+      {
+        "BuyDate": "2014-01-02T00:00:00",
+        "Model": "BMW",
+        "Price": 998000.0
+      }
+    ]
+  },
+  "NodeId": "7496a4d3-ac92-4d96-85a8-d5756353c9a3",
+  "UnitId": "47d687dd-c642-4e21-ac52-1d7afbec23b8",
+  "UpdateAt": "2014-08-08T16:00:52.3383035+08:00",
+  "Version": 12
+}

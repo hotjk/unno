@@ -1,0 +1,302 @@
+﻿{
+  "UnitId": "47d687dd-c642-4e21-ac52-1d7afbec23b8",
+  "Name": "项目信息",
+  "UpdateAt": "2014-08-08T16:00:46.7040755+08:00",
+  "Version": 0,
+  "Unit": {
+    "Key": "CompanyInfo",
+    "Name": "企业信息",
+    "Children": [
+      {
+        "Key": "CompanyName",
+        "Name": "企业名称",
+        "Specifications": [
+          {
+            "Min": 0,
+            "Max": 200,
+            "Type": "String"
+          },
+          {
+            "Type": "Required"
+          }
+        ],
+        "Leaf": true
+      },
+      {
+        "Key": "RegOfYear",
+        "Name": "注册年限",
+        "Specifications": [
+          {
+            "Min": 0,
+            "Max": 200,
+            "Type": "Integer"
+          },
+          {
+            "Type": "Required"
+          }
+        ],
+        "Leaf": true
+      },
+      {
+        "Key": "FinancialReport",
+        "Name": "财务状况",
+        "Children": [
+          {
+            "Key": "Year",
+            "Name": "年份",
+            "Specifications": [
+              {
+                "Min": 2000,
+                "Max": 2100,
+                "Type": "Integer"
+              },
+              {
+                "Type": "Required"
+              }
+            ],
+            "Leaf": true
+          },
+          {
+            "Key": "GrossProfit",
+            "Name": "毛利润(万)",
+            "Specifications": [
+              {
+                "Type": "Decimal"
+              },
+              {
+                "Type": "Required"
+              }
+            ],
+            "Leaf": true
+          },
+          {
+            "Key": "NetProfit",
+            "Name": "净利润(万)",
+            "Specifications": [
+              {
+                "Type": "Decimal"
+              },
+              {
+                "Type": "Required"
+              }
+            ],
+            "Leaf": true
+          },
+          {
+            "Key": "Full",
+            "Name": "全年",
+            "Specifications": [
+              {
+                "Type": "Boolean"
+              },
+              {
+                "Type": "Required"
+              }
+            ],
+            "Leaf": true
+          },
+          {
+            "Key": "UpdateAt",
+            "Name": "更新时间",
+            "Specifications": [
+              {
+                "Type": "DateTime"
+              },
+              {
+                "Type": "Required"
+              }
+            ],
+            "Leaf": true
+          },
+          {
+            "Key": "Category",
+            "Name": "分类",
+            "Specifications": [
+              {
+                "Options": [
+                  "分类1",
+                  "分类2",
+                  "分类3",
+                  "分类4"
+                ],
+                "Type": "Lookup"
+              },
+              {
+                "Type": "Required"
+              }
+            ],
+            "Leaf": true
+          },
+          {
+            "Key": "Remark",
+            "Name": "备注",
+            "Specifications": [
+              {
+                "Min": 0,
+                "Max": 1000,
+                "Type": "String"
+              }
+            ],
+            "Leaf": true
+          }
+        ],
+        "Specifications": [
+          {
+            "Max": 5,
+            "Type": "Composite"
+          }
+        ],
+        "Leaf": false
+      },
+      {
+        "Key": "House",
+        "Name": "房产信息",
+        "Children": [
+          {
+            "Key": "Size",
+            "Name": "建筑面积",
+            "Specifications": [
+              {
+                "Type": "Decimal"
+              },
+              {
+                "Type": "Required"
+              }
+            ],
+            "Leaf": true
+          },
+          {
+            "Key": "Address",
+            "Name": "地址",
+            "Specifications": [
+              {
+                "Min": 0,
+                "Max": 1000,
+                "Type": "String"
+              },
+              {
+                "Type": "Required"
+              }
+            ],
+            "Leaf": true
+          },
+          {
+            "Key": "Reference",
+            "Name": "参考",
+            "Children": [
+              {
+                "Key": "Site",
+                "Name": "参考网站",
+                "Specifications": [
+                  {
+                    "Min": 0,
+                    "Max": 1000,
+                    "Type": "String"
+                  },
+                  {
+                    "Type": "Required"
+                  }
+                ],
+                "Leaf": true
+              },
+              {
+                "Key": "Price",
+                "Name": "参考价格",
+                "Specifications": [
+                  {
+                    "Type": "Decimal"
+                  },
+                  {
+                    "Type": "Required"
+                  }
+                ],
+                "Leaf": true
+              }
+            ],
+            "Specifications": [
+              {
+                "Max": 5,
+                "Type": "Composite"
+              }
+            ],
+            "Leaf": false
+          }
+        ],
+        "Specifications": [
+          {
+            "Max": 5,
+            "Type": "Composite"
+          }
+        ],
+        "Leaf": false
+      },
+      {
+        "Key": "Car",
+        "Name": "车辆信息",
+        "Children": [
+          {
+            "Key": "BuyDate",
+            "Name": "购买日期",
+            "Specifications": [
+              {
+                "Min": "1990-01-01T00:00:00",
+                "Max": "2100-01-01T00:00:00",
+                "Type": "DateTime"
+              },
+              {
+                "Type": "Required"
+              }
+            ],
+            "Leaf": true
+          },
+          {
+            "Key": "Model",
+            "Name": "型号",
+            "Specifications": [
+              {
+                "Min": 0,
+                "Max": 1000,
+                "Type": "String"
+              },
+              {
+                "Type": "Required"
+              }
+            ],
+            "Leaf": true
+          },
+          {
+            "Key": "Price",
+            "Name": "价格",
+            "Specifications": [
+              {
+                "Type": "Decimal"
+              },
+              {
+                "Type": "Required"
+              }
+            ],
+            "Leaf": true
+          }
+        ],
+        "Specifications": [
+          {
+            "Max": 5,
+            "Type": "Composite"
+          }
+        ],
+        "Leaf": false
+      }
+    ],
+    "Specifications": [
+      {
+        "Min": 1,
+        "Max": 1,
+        "Type": "Composite"
+      },
+      {
+        "Type": "Required"
+      }
+    ],
+    "Leaf": false
+  }
+}

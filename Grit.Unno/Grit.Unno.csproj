@@ -1,0 +1,79 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{80A012A1-8BCD-42D4-A73C-AA0D9E53A272}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Grit.Unno</RootNamespace>
+    <AssemblyName>Grit.Unno</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ConcurrencyException.cs" />
+    <Compile Include="IStructureRepository.cs" />
+    <Compile Include="Unit\IConverter.cs" />
+    <Compile Include="Unit\IUnitRepository.cs" />
+    <Compile Include="Node\INodeRepository.cs" />
+    <Compile Include="IUnnoService.cs" />
+    <Compile Include="Node\Node.cs" />
+    <Compile Include="Node\NodeWrapper.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Specs\BooleanSpecification.cs" />
+    <Compile Include="Specs\CompositeSpecification.cs" />
+    <Compile Include="Specs\DateTimeSpecification.cs" />
+    <Compile Include="Specs\DecimalSpecification.cs" />
+    <Compile Include="Specs\IntegerSpecification.cs" />
+    <Compile Include="Specs\LookupSpecification.cs" />
+    <Compile Include="Specs\Specification.cs" />
+    <Compile Include="Specs\RequiredSpecification.cs" />
+    <Compile Include="Specs\SpecificationType.cs" />
+    <Compile Include="Specs\StringSpecification.cs" />
+    <Compile Include="UI\UIConstants.cs" />
+    <Compile Include="UI\UIControlFormat.cs" />
+    <Compile Include="UI\UIControlMode.cs" />
+    <Compile Include="UI\UIControlParams.cs" />
+    <Compile Include="UI\UIControlType.cs" />
+    <Compile Include="Unit\Unit.cs" />
+    <Compile Include="UnnoService.cs" />
+    <Compile Include="Unit\UnitWrapper.cs" />
+    <Compile Include="Utility.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
