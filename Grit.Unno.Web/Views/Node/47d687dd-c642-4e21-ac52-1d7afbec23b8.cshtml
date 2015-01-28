@@ -17,7 +17,7 @@
 {
     @Html.ValidationSummary(false, null, new { @class = "alert alert-danger alert-dismissible" })
     @Html.HiddenFor(x=>x.Version)
-    <button class="btn btn-default" type="submit">保存</button>
+    
     <div class="js-unno">
         <div class="row">
             <div class="col-md-12">
@@ -413,5 +413,5 @@
             </div>
         </div>
     </div>
-
+    <button class="btn btn-primary" type="submit">保存</button>
 }
