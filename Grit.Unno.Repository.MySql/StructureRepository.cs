@@ -18,13 +18,15 @@ namespace Grit.Unno.Repository.MySql
 
         #region static scripts
 
-        private static string unno_unit_script = 
+        private static string unno_unit_script =
 @"CREATE TABLE `unno_node_wrapper` (
   `NodeId` varchar(36) NOT NULL,
+  `RootId` int(11) NOT NULL AUTO_INCREMENT,
   `UnitId` varchar(36) NOT NULL,
-  `Version` int(11) DEFAULT NULL,
-  `UpdateAt` datetime DEFAULT NULL,
-  PRIMARY KEY (`NodeId`)
+  `Version` int(11) NOT NULL,
+  `UpdateAt` datetime NOT NULL,
+  PRIMARY KEY (`RootId`),
+  UNIQUE KEY `idx_unno_node_wrapper_nodeid` (`NodeId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `unno_unit_wrapper` (
@@ -84,7 +86,7 @@ CREATE TABLE `unno_unit_specs` (
             StringBuilder sb = new StringBuilder();
             sb.AppendFormat(
 @"CREATE TABLE `{0}` (
-  `NodeId` VARCHAR(36) NOT NULL,
+  `RootId` INT NOT NULL AUTO_INCREMENT,
   `ParentIndex` INT NOT NULL,
   `NodeIndex` INT NOT NULL,", table);
             foreach (var leaf in leaves)
@@ -117,8 +119,9 @@ CREATE TABLE `unno_unit_specs` (
                 }
             }
             sb.AppendFormat(
-@"  PRIMARY KEY (`NodeId`, `ParentIndex`, `NodeIndex`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;");
+@"  PRIMARY KEY (`RootId`, `ParentIndex`, `NodeIndex`),
+  CONSTRAINT `fk_{0}_rootid` FOREIGN KEY (`RootId`) REFERENCES `unno_node_wrapper` (`RootId`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;", table);
             sqls.Add(sb.ToString());
 
             foreach(var trunk in trunks)

@@ -30,11 +30,12 @@ namespace Grit.Unno.Web.App_Start
         {
             Kernel = new StandardKernel();
 
+            // You can use different repository for Unit and Node.
             switch(System.Configuration.ConfigurationManager.AppSettings["Repository"])
             {
                 case "File":
                     // Repository.File
-                    var fileOptions = new FileOptions(HttpContext.Current.Server.MapPath("files"));
+                    var fileOptions = new FileOptions(HttpContext.Current.Server.MapPath(System.Configuration.ConfigurationManager.ConnectionStrings["Grit.Unno.Repository.File"].ConnectionString));
                     Kernel.Bind<IUnitRepository>().To<Grit.Unno.Repository.File.UnitRepository>().InSingletonScope()
                         .WithConstructorArgument("options", fileOptions);
                     Kernel.Bind<INodeRepository>().To<Grit.Unno.Repository.File.NodeRepository>().InSingletonScope()
@@ -42,7 +43,7 @@ namespace Grit.Unno.Web.App_Start
                     break;
                 case "MongoDB":
                     // Repository.MongoDB
-                    var mongoDBOptions = new MongoDBOptions("mongodb://localhost", false);
+                    var mongoDBOptions = new MongoDBOptions(System.Configuration.ConfigurationManager.ConnectionStrings["Grit.Unno.Repository.MongoDB"].ConnectionString, false);
                     Kernel.Bind<IUnitRepository>().To<Grit.Unno.Repository.Mongodb.UnitRepository>().InSingletonScope()
                         .WithConstructorArgument("options", mongoDBOptions);
                     Kernel.Bind<INodeRepository>().To<Grit.Unno.Repository.Mongodb.NodeRepository>().InSingletonScope()
@@ -50,7 +51,7 @@ namespace Grit.Unno.Web.App_Start
                     break;
                 case "MySql":
                     // Repository.MySql
-                    var sqlOptions = new SqlOptions(System.Configuration.ConfigurationManager.ConnectionStrings["mysql"].ConnectionString);
+                    var sqlOptions = new SqlOptions(System.Configuration.ConfigurationManager.ConnectionStrings["Grit.Unno.Repository.MySql"].ConnectionString);
                     Kernel.Bind<IUnitRepository>().To<Grit.Unno.Repository.MySql.UnitRepository>().InSingletonScope()
                         .WithConstructorArgument("options", sqlOptions);
                     Kernel.Bind<INodeRepository>().To<Grit.Unno.Repository.MySql.NodeRepository>().InSingletonScope()

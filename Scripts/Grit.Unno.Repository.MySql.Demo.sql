@@ -25,12 +25,13 @@ DROP TABLE IF EXISTS `unno_companyinfo`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `unno_companyinfo` (
-  `NodeId` varchar(36) NOT NULL,
+  `RootId` int(11) NOT NULL AUTO_INCREMENT,
   `ParentIndex` int(11) NOT NULL,
   `NodeIndex` int(11) NOT NULL,
   `CompanyName` varchar(200) DEFAULT NULL,
   `RegOfYear` int(11) DEFAULT NULL,
-  PRIMARY KEY (`NodeId`,`ParentIndex`,`NodeIndex`)
+  PRIMARY KEY (`RootId`,`ParentIndex`,`NodeIndex`),
+  CONSTRAINT `fk_unno_CompanyInfo_rootid` FOREIGN KEY (`RootId`) REFERENCES `unno_node_wrapper` (`RootId`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -51,13 +52,14 @@ DROP TABLE IF EXISTS `unno_companyinfo_car`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `unno_companyinfo_car` (
-  `NodeId` varchar(36) NOT NULL,
+  `RootId` int(11) NOT NULL AUTO_INCREMENT,
   `ParentIndex` int(11) NOT NULL,
   `NodeIndex` int(11) NOT NULL,
   `BuyDate` datetime DEFAULT NULL,
   `Model` varchar(1000) DEFAULT NULL,
   `Price` decimal(20,6) DEFAULT NULL,
-  PRIMARY KEY (`NodeId`,`ParentIndex`,`NodeIndex`)
+  PRIMARY KEY (`RootId`,`ParentIndex`,`NodeIndex`),
+  CONSTRAINT `fk_unno_CompanyInfo_Car_rootid` FOREIGN KEY (`RootId`) REFERENCES `unno_node_wrapper` (`RootId`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -78,7 +80,7 @@ DROP TABLE IF EXISTS `unno_companyinfo_financialreport`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `unno_companyinfo_financialreport` (
-  `NodeId` varchar(36) NOT NULL,
+  `RootId` int(11) NOT NULL AUTO_INCREMENT,
   `ParentIndex` int(11) NOT NULL,
   `NodeIndex` int(11) NOT NULL,
   `Year` int(11) DEFAULT NULL,
@@ -88,7 +90,8 @@ CREATE TABLE `unno_companyinfo_financialreport` (
   `UpdateAt` datetime DEFAULT NULL,
   `Category` varchar(200) DEFAULT NULL,
   `Remark` varchar(1000) DEFAULT NULL,
-  PRIMARY KEY (`NodeId`,`ParentIndex`,`NodeIndex`)
+  PRIMARY KEY (`RootId`,`ParentIndex`,`NodeIndex`),
+  CONSTRAINT `fk_unno_CompanyInfo_FinancialReport_rootid` FOREIGN KEY (`RootId`) REFERENCES `unno_node_wrapper` (`RootId`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -109,12 +112,13 @@ DROP TABLE IF EXISTS `unno_companyinfo_house`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `unno_companyinfo_house` (
-  `NodeId` varchar(36) NOT NULL,
+  `RootId` int(11) NOT NULL AUTO_INCREMENT,
   `ParentIndex` int(11) NOT NULL,
   `NodeIndex` int(11) NOT NULL,
   `Size` decimal(20,6) DEFAULT NULL,
   `Address` varchar(1000) DEFAULT NULL,
-  PRIMARY KEY (`NodeId`,`ParentIndex`,`NodeIndex`)
+  PRIMARY KEY (`RootId`,`ParentIndex`,`NodeIndex`),
+  CONSTRAINT `fk_unno_CompanyInfo_House_rootid` FOREIGN KEY (`RootId`) REFERENCES `unno_node_wrapper` (`RootId`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -135,12 +139,13 @@ DROP TABLE IF EXISTS `unno_companyinfo_house_reference`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `unno_companyinfo_house_reference` (
-  `NodeId` varchar(36) NOT NULL,
+  `RootId` int(11) NOT NULL AUTO_INCREMENT,
   `ParentIndex` int(11) NOT NULL,
   `NodeIndex` int(11) NOT NULL,
   `Site` varchar(1000) DEFAULT NULL,
   `Price` decimal(20,6) DEFAULT NULL,
-  PRIMARY KEY (`NodeId`,`ParentIndex`,`NodeIndex`)
+  PRIMARY KEY (`RootId`,`ParentIndex`,`NodeIndex`),
+  CONSTRAINT `fk_unno_CompanyInfo_House_Reference_rootid` FOREIGN KEY (`RootId`) REFERENCES `unno_node_wrapper` (`RootId`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -162,10 +167,12 @@ DROP TABLE IF EXISTS `unno_node_wrapper`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `unno_node_wrapper` (
   `NodeId` varchar(36) NOT NULL,
+  `RootId` int(11) NOT NULL AUTO_INCREMENT,
   `UnitId` varchar(36) NOT NULL,
-  `Version` int(11) DEFAULT NULL,
-  `UpdateAt` datetime DEFAULT NULL,
-  PRIMARY KEY (`NodeId`)
+  `Version` int(11) NOT NULL,
+  `UpdateAt` datetime NOT NULL,
+  PRIMARY KEY (`RootId`),
+  UNIQUE KEY `idx_unno_node_wrapper_nodeid` (`NodeId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -259,6 +266,10 @@ LOCK TABLES `unno_unit_wrapper` WRITE;
 INSERT INTO `unno_unit_wrapper` VALUES ('47d687dd-c642-4e21-ac52-1d7afbec23b8','项目信息',0,'2014-08-08 16:00:47');
 /*!40000 ALTER TABLE `unno_unit_wrapper` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Dumping routines for database 'unno'
+--
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -269,4 +280,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-01-25 15:33:01
+-- Dump completed on 2015-02-02 16:28:05

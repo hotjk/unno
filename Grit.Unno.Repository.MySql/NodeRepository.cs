@@ -22,19 +22,21 @@ namespace Grit.Unno.Repository.MySql
         public NodeWrapper LoadNode(Guid id)
         {
             NodeWrapper wrapper = null;
+            int rootId = 0;
             UnitWrapper unitWrapper = null;
             List<NodeTable> tables = new List<NodeTable>();
             using (MySqlConnection connection = OpenConnection())
             {
                 using (var cmd = connection.CreateCommand())
                 {
-                    cmd.CommandText = @"SELECT `NodeId`, `UnitId`, `Version`, `UpdateAt` FROM `unno_node_wrapper` WHERE `NodeId` = @NodeId;";
+                    cmd.CommandText = @"SELECT `NodeId`, `UnitId`, `RootId`, `Version`, `UpdateAt` FROM `unno_node_wrapper` WHERE `NodeId` = @NodeId;";
                     cmd.Parameters.AddWithValue("@NodeId", id);
                     using (var reader = cmd.ExecuteReader())
                     {
                         while (reader.Read())
                         {
                             wrapper = new NodeWrapper();
+                            rootId = (int)reader["RootId"];
                             wrapper.NodeId = id;
                             wrapper.UnitId = Guid.Parse(reader["UnitId"].ToString());
                             wrapper.Version = (int)reader["Version"];
@@ -45,7 +47,7 @@ namespace Grit.Unno.Repository.MySql
                 if (wrapper != null)
                 {
                     unitWrapper = _unitRepository.LoadUnit(wrapper.UnitId);
-                    LoadDataFromDB(connection, id, unitWrapper.Unit, UNNO_TABLE_PREFIX, tables);
+                    LoadDataFromDB(connection, rootId, unitWrapper.Unit, UNNO_TABLE_PREFIX, tables);
                 }
             }
 
@@ -88,7 +90,7 @@ namespace Grit.Unno.Repository.MySql
             return node;
         }
 
-        private void LoadDataFromDB(MySqlConnection connection, Guid id, Unit unit, string tableName, List<NodeTable> refTables)
+        private void LoadDataFromDB(MySqlConnection connection, int rootId, Unit unit, string tableName, List<NodeTable> refTables)
         {
             tableName = tableName + "_" + unit.Key;
 
@@ -101,13 +103,13 @@ namespace Grit.Unno.Repository.MySql
             {
                 sb.AppendFormat(", `{0}`", leaf.Key);
             }
-            sb.AppendFormat(" FROM `{0}` WHERE `NodeId` = @NodeId ORDER BY `ParentIndex`, `NodeIndex`;", tableName);
+            sb.AppendFormat(" FROM `{0}` WHERE `RootId` = @RootId ORDER BY `ParentIndex`, `NodeIndex`;", tableName);
 
             var table = new NodeTable(tableName);
             using (var cmd = connection.CreateCommand())
             {
                 cmd.CommandText = sb.ToString();
-                cmd.Parameters.AddWithValue("@NodeId", id);
+                cmd.Parameters.AddWithValue("@RootId", rootId);
                 using (var reader = cmd.ExecuteReader())
                 {
                     while (reader.Read())
@@ -125,7 +127,7 @@ namespace Grit.Unno.Repository.MySql
 
             foreach (var trunk in trunks)
             {
-                LoadDataFromDB(connection, id, trunk, tableName, refTables);
+                LoadDataFromDB(connection, rootId, trunk, tableName, refTables);
             }
         }
 
@@ -137,7 +139,10 @@ namespace Grit.Unno.Repository.MySql
                 {
                     if (SaveWrapper(connection, wrapper))
                     {
-                        SaveNode(connection, wrapper.NodeId, wrapper.Node, UNNO_TABLE_PREFIX, 0);
+                        int rootId = connection.Query<int>(@"SELECT `RootId` FROM `unno_node_wrapper` WHERE `NodeId` = @NodeId;",
+                            new { NodeId = wrapper.NodeId }).Single();
+
+                        SaveNode(connection, rootId, wrapper.Node, UNNO_TABLE_PREFIX, 0);
                         transaction.Commit();
                     }
                 }
@@ -172,11 +177,11 @@ WHERE `NodeId` = @NodeId;", wrapper);
             return true;
         }
 
-        private void SaveNode(MySqlConnection connection, Guid id, Node node, string tableName, int parentIndex)
+        private void SaveNode(MySqlConnection connection, int rootId, Node node, string tableName, int parentIndex)
         {
             tableName = tableName + "_" + node.Key;
-            connection.Execute(string.Format("DELETE FROM `{0}` WHERE `NodeId` = @NodeId AND `ParentIndex` = @ParentIndex; ", tableName),
-                new { NodeId = id, ParentIndex = parentIndex });
+            connection.Execute(string.Format("DELETE FROM `{0}` WHERE `RootId` = @RootId AND `ParentIndex` = @ParentIndex; ", tableName),
+                new { RootId = rootId, ParentIndex = parentIndex });
 
             int index = 0;
             foreach (Dictionary<string, Node> dict in node.Children)
@@ -186,19 +191,19 @@ WHERE `NodeId` = @NodeId;", wrapper);
 
                 StringBuilder sb = new StringBuilder();
 
-                sb.AppendFormat("INSERT INTO `{0}` (`NodeId`, `ParentIndex`, `NodeIndex`", tableName);
+                sb.AppendFormat("INSERT INTO `{0}` (`RootId`, `ParentIndex`, `NodeIndex`", tableName);
                 foreach (var kv in leaves)
                 {
                     sb.AppendFormat(", `{0}`", kv.Key);
                 }
-                sb.AppendFormat(") VALUES (@NodeId, @ParentIndex, @NodeIndex ");
+                sb.AppendFormat(") VALUES (@RootId, @ParentIndex, @NodeIndex ");
                 foreach (var leaf in leaves)
                 {
                     sb.AppendFormat(", @{0}", leaf.Key);
                 }
                 sb.AppendFormat(");");
                 DynamicParameters p = new DynamicParameters();
-                p.Add("NodeId", id);
+                p.Add("RootId", rootId);
                 p.Add("ParentIndex", parentIndex);
                 p.Add("NodeIndex", index);
                 foreach (var leaf in leaves)
@@ -211,7 +216,7 @@ WHERE `NodeId` = @NodeId;", wrapper);
                 {
                     if (trunk.Value.Children != null)
                     {
-                        SaveNode(connection, id, trunk.Value, tableName, index);
+                        SaveNode(connection, rootId, trunk.Value, tableName, index);
                     }
                 }
                 index++;

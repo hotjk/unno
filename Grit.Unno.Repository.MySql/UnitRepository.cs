@@ -11,6 +11,11 @@ namespace Grit.Unno.Repository.MySql
 {
     public class UnitRepository : BaseRepository, IUnitRepository
     {
+        public UnitRepository(SqlOptions options)
+        {
+            _options = options;
+        }
+
         public UnitWrapper LoadUnit(Guid id)
         {
             using (MySqlConnection connection = OpenConnection())
