@@ -135,6 +135,26 @@ namespace Grit.Unno
 
         #endregion
 
+        public Node this[int index, string key]
+        {
+            get
+            {
+                Node node = null;
+
+                if (Children != null)
+                {
+                    var row = Children[index];
+                    if (row != null)
+                    {
+                        row.TryGetValue(key, out node);
+                        
+                    }
+                }
+
+                return node;
+            }
+        }
+
         #region UI Parse
 
         /// <summary>

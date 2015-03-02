@@ -121,5 +121,17 @@ namespace Grit.Unno
             }
             return list;
         }
+
+        public Unit this[string key]
+        {
+            get
+            {
+                if (Children == null)
+                {
+                    return null;
+                }
+                return Children.FirstOrDefault(n => n.Key == key);
+            }
+        }
     }
 }
