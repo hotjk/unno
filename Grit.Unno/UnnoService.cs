@@ -17,22 +17,6 @@ namespace Grit.Unno
             _nodeRepository = nodeRepository;
         }
 
-        public bool LoadUnitAndNode(Guid id, out UnitWrapper unitWrapper, out NodeWrapper nodeWrapper)
-        {
-            nodeWrapper = LoadNode(id);
-            unitWrapper = null;
-            if (nodeWrapper == null)
-            {
-                unitWrapper = LoadUnit(id);
-            }
-            else
-            {
-                unitWrapper = LoadUnit(nodeWrapper.UnitId);
-            }
-
-            return unitWrapper != null;
-        }
-
         public UnitWrapper LoadUnit(Guid id)
         {
             UnitWrapper wrapper = _unitRepository.LoadUnit(id);
@@ -51,6 +35,7 @@ namespace Grit.Unno
             if (wrapper != null)
             {
                 UnitWrapper unitWrapper = _unitRepository.LoadUnit(wrapper.UnitId);
+                wrapper.Node.Unit = unitWrapper.Unit;
             }
             return wrapper;
         }

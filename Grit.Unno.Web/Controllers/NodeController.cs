@@ -15,48 +15,51 @@ namespace Grit.Unno.Web.Controllers
             this._unnoService = unnoService;
         }
 
-        public ActionResult Index(Guid id)
-        {
-            NodeWrapper wrapper = _unnoService.LoadNode(id);
-            return View(wrapper);
-        }
-
         [HttpGet]
         public ActionResult Edit(Guid id)
         {
+            NodeWrapper nodeWrapper = _unnoService.LoadNode(id);
             UnitWrapper unitWrapper = null;
-            NodeWrapper nodeWrapper = null;
-            if (!_unnoService.LoadUnitAndNode(id, out unitWrapper, out nodeWrapper))
-            {
-                return new HttpNotFoundResult();
-            }
-
             if(nodeWrapper == null)
             {
-                nodeWrapper = new NodeWrapper { NodeId = unitWrapper.UnitId, 
-                    UnitId = unitWrapper.UnitId, 
-                    Node = new Node(unitWrapper.Unit.Key) };
+                unitWrapper = _unnoService.LoadUnit(id);
+                if(unitWrapper == null)
+                {
+                    return new HttpNotFoundResult();
+                }
+                nodeWrapper = new NodeWrapper
+                {
+                    NodeId = unitWrapper.UnitId,
+                    UnitId = unitWrapper.UnitId,
+                    Node = new Node(unitWrapper.Unit.Key)
+                };
             }
-
+            else
+            {
+                unitWrapper = _unnoService.LoadUnit(nodeWrapper.UnitId);
+            }
             ViewBag.Unit = unitWrapper.Unit;
             ViewBag.Node = nodeWrapper.Node;
-            
-            return View(unitWrapper.UnitId.ToString(), nodeWrapper);
+            return View(nodeWrapper.UnitId.ToString(), nodeWrapper);
         }
 
         [HttpPost]
         public ActionResult Edit(Guid id, int version, string name = null)
         {
+            NodeWrapper nodeWrapper = _unnoService.LoadNode(id);
             UnitWrapper unitWrapper = null;
-            NodeWrapper nodeWrapper = null;
-            if (!_unnoService.LoadUnitAndNode(id, out unitWrapper, out nodeWrapper))
-            {
-                return new HttpNotFoundResult();
-            }
-
             if (nodeWrapper == null)
             {
+                unitWrapper = _unnoService.LoadUnit(id);
+                if (unitWrapper == null)
+                {
+                    return new HttpNotFoundResult();
+                }
                 nodeWrapper = new NodeWrapper { NodeId = Guid.NewGuid(), UnitId = unitWrapper.UnitId };
+            }
+            else
+            {
+                unitWrapper = _unnoService.LoadUnit(nodeWrapper.UnitId);
             }
 
             Node node = _unnoService.Parse(unitWrapper.Unit, Request.Form);
