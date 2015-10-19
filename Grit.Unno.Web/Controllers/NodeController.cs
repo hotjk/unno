@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -13,6 +14,17 @@ namespace Grit.Unno.Web.Controllers
         public NodeController(IUnnoService unnoService)
         {
             this._unnoService = unnoService;
+        }
+
+        [HttpGet]
+        public ActionResult Index(Guid id)
+        {
+            NodeWrapper nodeWrapper = _unnoService.LoadNode(id);
+            UnitWrapper unitWrapper = _unnoService.LoadUnit(nodeWrapper.UnitId);
+
+            ViewBag.Unit = unitWrapper.Unit;
+            ViewBag.Node = nodeWrapper.Node;
+            return View(nodeWrapper.UnitId.ToString(), nodeWrapper);
         }
 
         [HttpGet]
@@ -40,7 +52,7 @@ namespace Grit.Unno.Web.Controllers
             }
             ViewBag.Unit = unitWrapper.Unit;
             ViewBag.Node = nodeWrapper.Node;
-            return View(nodeWrapper.UnitId.ToString(), nodeWrapper);
+            return View(Path.Combine("Edit", nodeWrapper.UnitId.ToString()), nodeWrapper);
         }
 
         [HttpPost]

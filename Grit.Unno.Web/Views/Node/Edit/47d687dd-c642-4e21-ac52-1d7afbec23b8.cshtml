@@ -1,0 +1,420 @@
+﻿@model NodeWrapper
+@using Grit.Unno
+@{
+    Unit unit = ViewBag.Unit as Unit;
+    Node node = ViewBag.Node as Node;
+}
+@section css {
+    <link href="~/Content/bootstrap-datepicker3.css" rel="stylesheet" />
+    <link href="~/Content/grit.unno.css" rel="stylesheet" />
+}
+@section scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Scripts/bootstrap-datepicker.js"></script>
+    <script src="~/Scripts/grit.unno.js"></script>
+}
+@using (Html.BeginForm("Edit", "Node", new { id = Model.NodeId }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+    @Html.ValidationSummary(false, null, new { @class = "alert alert-danger alert-dismissible" })
+    @Html.HiddenFor(x=>x.Version)
+    
+    <div class="js-unno">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label for="CompanyInfo-0_CompanyName-0" class="col-sm-2 control-label">企业名称</label>
+                    <div class="col-sm-10">
+                        @Html.Partial("Control", new UIControlParams("CompanyInfo-0_CompanyName-0", style: "max-width:100%"))
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="CompanyInfo-0_RegOfYear-0" class="col-sm-2 control-label">注册年限</label>
+                    <div class="col-sm-10">
+                        @Html.Partial("Control", new UIControlParams("CompanyInfo-0_RegOfYear-0"))
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="CompanyInfo-0_FinancialReport-0" class="col-sm-2 control-label">财务状况</label>
+                    <div class="col-sm-10">
+                        @{
+    var financialReport = node.Find("CompanyInfo-0_FinancialReport-0");
+                        }
+                        <div class="js-unno">
+                            <table class="table table-condensed">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            <button class="btn btn-default js-unno-add-row">添加</button>
+                                        </th>
+                                        <th>
+                                            年份
+                                        </th>
+                                        <th>
+                                            毛利润(万)
+                                        </th>
+                                        <th>
+                                            净利润(万)
+                                        </th>
+                                        <th>
+                                            全年
+                                        </th>
+                                        <th>
+                                            分类
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="js-unno-template">
+                                        <td>
+                                            <button class="btn btn-default js-unno-detail-row">详细</button>
+                                            <button class="btn btn-default js-unno-delete-row">删除</button>
+                                            @Html.Partial("Control", new UIControlParams("CompanyInfo-0_FinancialReport-[id]_UpdateAt-0", model: UIControlMode.Template, type: UIControlType.Hidden, format: UIControlFormat.Date))
+                                            @Html.Partial("Control", new UIControlParams("CompanyInfo-0_FinancialReport-[id]_Remark-0", model: UIControlMode.Template, type: UIControlType.Hidden))
+                                        </td>
+                                        <td>
+                                            @Html.Partial("Control", new UIControlParams("CompanyInfo-0_FinancialReport-[id]_Year-0", model: UIControlMode.Template))
+                                        </td>
+                                        <td>
+                                            @Html.Partial("Control", new UIControlParams("CompanyInfo-0_FinancialReport-[id]_GrossProfit-0", model: UIControlMode.Template))
+                                        </td>
+                                        <td>
+                                            @Html.Partial("Control", new UIControlParams("CompanyInfo-0_FinancialReport-[id]_NetProfit-0", model: UIControlMode.Template))
+                                        </td>
+                                        <td>
+                                            @Html.Partial("Control", new UIControlParams("CompanyInfo-0_FinancialReport-[id]_Full-0", model: UIControlMode.Template, type: UIControlType.Checkbox, format: UIControlFormat.String, cssClass:string.Empty))
+                                        </td>
+                                        <td>
+                                            @Html.Partial("Control", new UIControlParams("CompanyInfo-0_FinancialReport-[id]_Category-0", model: UIControlMode.Template, type: UIControlType.DropDownList))
+                                        </td>
+                                    </tr>
+                                    @if (financialReport != null && financialReport.Children != null)
+                                    {
+                                        for (int i = 0; i < financialReport.Children.Count(); i++)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    <button class="btn btn-default js-unno-detail-row">详细</button>
+                                                    <button class="btn btn-default js-unno-delete-row">删除</button>
+                                                    @Html.Partial("Control", new UIControlParams("CompanyInfo-0_FinancialReport-" + i + "_UpdateAt-0", type: UIControlType.Hidden, format: UIControlFormat.Date))
+                                                    @Html.Partial("Control", new UIControlParams("CompanyInfo-0_FinancialReport-" + i + "_Remark-0", type: UIControlType.Hidden))
+                                                    @*@Html.Partial("Control", new UIControlParams("CompanyInfo-0_FinancialReport-" + i + "_Full-0", type: UIControlType.Hidden))*@
+                                                </td>
+                                                <td>
+                                                    @Html.Partial("Control", new UIControlParams("CompanyInfo-0_FinancialReport-" + i + "_Year-0"))
+                                                </td>
+                                                <td>
+                                                    @Html.Partial("Control", new UIControlParams("CompanyInfo-0_FinancialReport-" + i + "_GrossProfit-0"))
+                                                </td>
+                                                <td>
+                                                    @Html.Partial("Control", new UIControlParams("CompanyInfo-0_FinancialReport-" + i + "_NetProfit-0"))
+                                                </td>
+                                                <td>
+                                                    @Html.Partial("Control", new UIControlParams("CompanyInfo-0_FinancialReport-" + i + "_Full-0", type: UIControlType.Checkbox, format: UIControlFormat.String, cssClass: string.Empty))
+                                                </td>
+                                                <td>
+                                                    @Html.Partial("Control", new UIControlParams("CompanyInfo-0_FinancialReport-" + i + "_Category-0", type: UIControlType.DropDownList))
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                            <div class="modal fade js-unno-template" role="dialog" aria-hidden="true">
+                                <div class="modal-dialog modal-lg">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <a class="close" data-dismiss="modal">×</a>
+                                            <h3>财务状况</h3>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="form-group">
+                                                <label for="Year-0" class="col-sm-2 control-label">年份</label>
+                                                <div class="col-sm-10">
+                                                    @Html.Partial("Control", new UIControlParams("Year-0", model: UIControlMode.Modal, unit: "CompanyInfo_FinancialReport_Year"))
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="GrossProfit-0" class="col-sm-2 control-label">毛利润(万)</label>
+                                                <div class="col-sm-10">
+                                                    @Html.Partial("Control", new UIControlParams("GrossProfit-0", model: UIControlMode.Modal, unit: "CompanyInfo_FinancialReport_GrossProfit"))
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="NetProfit-0" class="col-sm-2 control-label">净利润(万)</label>
+                                                <div class="col-sm-10">
+                                                    @Html.Partial("Control", new UIControlParams("NetProfit-0", model: UIControlMode.Modal, unit: "CompanyInfo_FinancialReport_NetProfit"))
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="UpdateAt-0" class="col-sm-2 control-label">更新时间</label>
+                                                <div class="col-sm-10">
+                                                    @Html.Partial("Control", new UIControlParams("UpdateAt-0", model: UIControlMode.Modal, unit: "CompanyInfo_FinancialReport_UpdateAt", type: UIControlType.DatePicker, format: UIControlFormat.Date))
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="Full-0" class="col-sm-2 control-label"></label>
+                                                <div class="col-sm-10 checkbox">
+                                                    <label>
+                                                        @Html.Partial("Control", new UIControlParams("Full-0", model: UIControlMode.Modal, unit: "CompanyInfo_FinancialReport_Full", type: UIControlType.Checkbox, format: UIControlFormat.String, cssClass: string.Empty))
+                                                        全年
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="Category-0" class="col-sm-2 control-label">分类</label>
+                                                <div class="col-sm-10">
+                                                    @Html.Partial("Control", new UIControlParams("Category-0", model: UIControlMode.Modal, unit: "CompanyInfo_FinancialReport_Category", type: UIControlType.DropDownList))
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="Remark-0" class="col-sm-2 control-label">备注</label>
+                                                <div class="col-sm-10">
+                                                    @Html.Partial("Control", new UIControlParams("Remark-0", model: UIControlMode.Modal, unit: "CompanyInfo_FinancialReport_Remark", type: UIControlType.TextArea, style: "max-width:100%"))
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button class="btn btn-default btn-default" data-dismiss="modal">
+                                                取消
+                                            </button>
+                                            <button class="btn btn-default btn-primary" name="js-unno-save-modal">
+                                                确定
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="CompanyInfo-0_House-0" class="col-sm-2 control-label">房产信息</label>
+                    <div class="col-sm-10">
+                        @{
+    var house = node.Find("CompanyInfo-0_House-0");
+                        }
+                        <div class="js-unno">
+                            <ul class="nav nav-tabs js-unno-tab">
+                                <li class="js-unno-template" style="display:none;">
+                                    <a data-toggle="tab" href="#CompanyInfo-0_House-[id]">新标签</a>
+                                </li>
+                                @if (house != null && house.Children != null)
+                                {
+                                    for (int i = 0; i < house.Children.Count(); i++)
+                                    {
+                                        <li>
+                                            <a href="#CompanyInfo-0_House-@(i)" data-toggle="tab">
+                                                @(string.IsNullOrEmpty(house.Children[i]["Address"].Value.ToString()) ? "标签" : house.Children[i]["Address"].Value)
+                                            </a>
+                                        </li>
+                                    }
+                                }
+                                <li>
+                                    <button class="btn btn-default js-unno-add-tab">添加</button>
+                                </li>
+                                <li class="pull-right">
+                                    <button class="btn btn-default js-unno-delete-tab">删除</button>
+                                </li>
+                            </ul>
+                            <div class="tab-content js-unno-tab-content">
+                                <div class="js-unno-template tab-pane" id="CompanyInfo-0_House-[id]">
+                                    <div class="form-group">
+                                        <label for="CompanyInfo-0_House-[id]_Size-0" class="col-sm-2 control-label">建筑面积</label>
+                                        <div class="col-sm-10">
+                                            @Html.Partial("Control", new UIControlParams("CompanyInfo-0_House-[id]_Size-0", model: UIControlMode.Template))
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="CompanyInfo-0_House-[id]_Address-0" class="col-sm-2 control-label">地址</label>
+                                        <div class="col-sm-10">
+                                            @Html.Partial("Control", new UIControlParams("CompanyInfo-0_House-[id]_Address-0", model: UIControlMode.Template))
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="CompanyInfo-0_House-[id]_Reference-0" class="col-sm-2 control-label">参考</label>
+                                        <div class="col-sm-10">
+                                            <div class="js-unno">
+                                                <table class="table table-condensed">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>
+                                                                <button class="btn btn-default js-unno-add-row">添加</button>
+                                                            </th>
+                                                            <th>
+                                                                参考网站
+                                                            </th>
+                                                            <th>
+                                                                参考价格
+                                                            </th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr class="js-unno-template">
+                                                            <td>
+                                                                <button class="btn btn-default js-unno-delete-row">删除</button>
+                                                            </td>
+                                                            <td>
+                                                                @Html.Partial("Control", new UIControlParams("CompanyInfo-0_House-[id]_Reference-[id]_Site-0", model: UIControlMode.Template))
+                                                            </td>
+                                                            <td>
+                                                                @Html.Partial("Control", new UIControlParams("CompanyInfo-0_House-[id]_Reference-[id]_Price-0", model: UIControlMode.Template))
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                @if (house != null && house.Children != null)
+                                {
+                                    for (int i = 0; i < house.Children.Count(); i++)
+                                    {
+                                        <div class="tab-pane" id="CompanyInfo-0_House-@(i)">
+                                            <div class="form-group">
+                                                <label for="CompanyInfo-0_House-@(i)_Size-0" class="col-sm-2 control-label">建筑面积</label>
+                                                <div class="col-sm-10">
+                                                    @Html.Partial("Control", new UIControlParams("CompanyInfo-0_House-" + i + "_Size-0"))
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="CompanyInfo-0_House-@(i)_Address-0" class="col-sm-2 control-label">地址</label>
+                                                <div class="col-sm-10">
+                                                    @Html.Partial("Control", new UIControlParams("CompanyInfo-0_House-" + i + "_Address-0"))
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="CompanyInfo-0_House-@(i)_Reference-0" class="col-sm-2 control-label">参考</label>
+                                                <div class="col-sm-10">
+                                                    <div class="js-unno">
+                                                        <table class="table table-condensed">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>
+                                                                        <button class="btn btn-default js-unno-add-row">添加</button>
+                                                                    </th>
+                                                                    <th>
+                                                                        参考网站
+                                                                    </th>
+                                                                    <th>
+                                                                        参考价格
+                                                                    </th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr class="js-unno-template">
+                                                                    <td>
+                                                                        <button class="btn btn-default js-unno-delete-row">删除</button>
+                                                                    </td>
+                                                                    <td>
+                                                                        @Html.Partial("Control", new UIControlParams("CompanyInfo-0_House-" + i + "_Reference-[id]_Site-0", model: UIControlMode.Template))
+                                                                    </td>
+                                                                    <td>
+                                                                        @Html.Partial("Control", new UIControlParams("CompanyInfo-0_House-" + i + "_Reference-[id]_Price-0", model: UIControlMode.Template))
+                                                                    </td>
+                                                                </tr>
+                                                                @{
+                                                                Node reference;
+                                                                house.Children[i].TryGetValue("Reference", out reference);
+                                                                }
+                                                                @if (reference != null && reference.Children != null)
+                                                                {
+                                                                    for (int j = 0; j < reference.Children.Count(); j++)
+                                                                    {
+                                                                        <tr>
+                                                                            <td>
+                                                                                <button class="btn btn-default js-unno-delete-row">删除</button>
+                                                                            </td>
+                                                                            <td>
+                                                                                @Html.Partial("Control", new UIControlParams("CompanyInfo-0_House-" + i + "_Reference-" + j + "_Site-0"))
+                                                                            </td>
+                                                                            <td>
+                                                                                @Html.Partial("Control", new UIControlParams("CompanyInfo-0_House-" + i + "_Reference-" + j + "_Price-0"))
+                                                                            </td>
+                                                                        </tr>
+                                                                    }
+                                                                }
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="CompanyInfo-0_Car-0" class="col-sm-2 control-label">车辆信息</label>
+                    <div class="col-sm-10">
+                        @{
+    var car = node.Find("CompanyInfo-0_Car-0");
+                        }
+                        <div class="js-unno">
+                            <table class="table table-condensed">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            <button class="btn btn-default js-unno-add-row">添加</button>
+                                        </th>
+                                        <th>
+                                            购买日期
+                                        </th>
+                                        <th>
+                                            型号
+                                        </th>
+                                        <th>
+                                            价格
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="js-unno-template">
+                                        <td>
+                                            <button class="btn btn-default js-unno-delete-row">删除</button>
+                                        </td>
+                                        <td>
+                                            @Html.Partial("Control", new UIControlParams("CompanyInfo-0_Car-[id]_BuyDate-0", model: UIControlMode.Template, type: UIControlType.DatePicker, format: UIControlFormat.Date))
+                                        </td>
+                                        <td>
+                                            @Html.Partial("Control", new UIControlParams("CompanyInfo-0_Car-[id]_Model-0", model: UIControlMode.Template))
+                                        </td>
+                                        <td>
+                                            @Html.Partial("Control", new UIControlParams("CompanyInfo-0_Car-[id]_Price-0", model: UIControlMode.Template))
+                                        </td>
+                                    </tr>
+                                    @if (car != null && car.Children != null)
+                                    {
+                                        for (int i = 0; i < car.Children.Count(); i++)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    <button class="btn btn-default js-unno-delete-row">删除</button>
+                                                </td>
+                                                <td>
+                                                    @Html.Partial("Control", new UIControlParams("CompanyInfo-0_Car-" + i + "_BuyDate-0", type: UIControlType.DatePicker, format: UIControlFormat.Date))
+                                                </td>
+                                                <td>
+                                                    @Html.Partial("Control", new UIControlParams("CompanyInfo-0_Car-" + i + "_Model-0"))
+                                                </td>
+                                                <td>
+                                                    @Html.Partial("Control", new UIControlParams("CompanyInfo-0_Car-" + i + "_Price-0"))
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <button class="btn btn-primary" type="submit">保存</button>
+}

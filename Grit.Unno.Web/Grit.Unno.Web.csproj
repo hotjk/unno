@@ -214,6 +214,10 @@
     <Content Include="Scripts\respond.matchmedia.addListener.min.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\_references.js" />
+    <Content Include="Views\Node\47d687dd-c642-4e21-ac52-1d7afbec23b8.cshtml">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Views\Node\Edit\47d687dd-c642-4e21-ac52-1d7afbec23b8.cshtml" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -226,7 +230,7 @@
     <Content Include="Views\Shared\Control.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Node\47d687dd-c642-4e21-ac52-1d7afbec23b8.cshtml" />
+    <Content Include="Views\Shared\Display.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

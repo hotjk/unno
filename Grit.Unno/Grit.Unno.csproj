@@ -41,6 +41,7 @@
   <ItemGroup>
     <Compile Include="ConcurrencyException.cs" />
     <Compile Include="IStructureRepository.cs" />
+    <Compile Include="UI\UIDisplayParams.cs" />
     <Compile Include="Unit\IConverter.cs" />
     <Compile Include="Unit\IUnitRepository.cs" />
     <Compile Include="Node\INodeRepository.cs" />

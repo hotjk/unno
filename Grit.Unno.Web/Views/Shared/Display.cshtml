@@ -1,0 +1,37 @@
+﻿@model UIDisplayParams
+@using Grit.Unno;
+@{
+    Unit rootUnit = ViewBag.Unit as Unit;
+    Node rootNode = ViewBag.Node as Node;
+
+    object value = null;
+    string displayValue = string.Empty;
+    
+    Node node = rootNode.Find(Model.Key);
+    if (node != null)
+    {
+        value = node.Value;
+        switch (Model.Format)
+        {
+            case UIControlFormat.Date:
+                displayValue = ((DateTime)node.Value).ToString("yyyy-MM-dd");
+                break;
+            case UIControlFormat.DateTime:
+                displayValue = ((DateTime)node.Value).ToString("yyyy-MM-dd hh-mm-dd");
+                break;
+            default:
+                displayValue = node.Value.ToString();
+                break;
+        }
+    }
+
+    string name = string.Empty;
+    Unit unit = rootUnit.Find(string.IsNullOrEmpty(Model.Unit) ? Model.Key : Model.Unit, ref name);
+    var properties = unit.UIValidateProperties(name);
+    
+    properties.Add("class", Model.CssClass);
+    if (!string.IsNullOrEmpty(Model.Style))
+    {
+        properties.Add("style", Model.Style);
+    }
+}@displayValue
