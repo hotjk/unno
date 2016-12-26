@@ -7,10 +7,6 @@
 * Repository 完成存储。
 * 数据结构发生变更时，需要更新 Unit 结构；前端针对该 Unit 的 View；如果采用数据库存储，还需要更新表结构。
 
-## Demo
-
-![unno](https://github.com/hotjk/unno/blob/master/unno.png)
-
 #### 访问地址
 
 > http://localhost:14736/node/edit/47d687dd-c642-4e21-ac52-1d7afbec23b8
